@@ -1,5 +1,6 @@
 const socket = io();
 const messages = document.getElementById("chat-form");
+const userslist = document.getElementById("users");
 const params = new URLSearchParams(window.location.search);
 
 const username = params.get("username");
@@ -19,6 +20,16 @@ socket.on("recieve-message", (data) => {
     username: data.username,
     message: data.message,
     time: data.time,
+  });
+});
+
+socket.on("roomUsers", ({ room, users }) => {
+  document.getElementById("room-name").innerText = room;
+  userslist.innerHTML = "";
+  users.forEach((element) => {
+    const li = document.createElement("li");
+    li.innerText = element.username;
+    userslist.appendChild(li);
   });
 });
 
